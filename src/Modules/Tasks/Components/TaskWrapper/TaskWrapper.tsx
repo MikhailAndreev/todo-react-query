@@ -6,16 +6,24 @@ import {
   Button,
   Typography,
 } from "@mui/material";
-import * as dayjs from "dayjs";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+
 import { TaskItem } from "../TaskItem/TaskItem";
 import "./TaskWrapper.css";
 import { v4 as uuidv4 } from "uuid";
 import { ITaskData, ITaskItem } from "../../../../Common/Models/Busines";
 import { useHandleChangeAppUi } from "../../../../Common/Context/AppUIContext";
 import { useToggleTasks } from "../../../../Common/Context/TasksContext";
+import dayjs from "dayjs";
+import isToday from "dayjs/plugin/isToday";
+import isTomorrow from "dayjs/plugin/isTomorrow";
+
+dayjs.extend(isToday);
+dayjs.extend(isTomorrow);
 
 export interface ITaskWrapperProps {
   data: ITaskData;
+  key: string;
 }
 
 export const TaskWrapper: React.FC<ITaskWrapperProps> = ({
@@ -24,8 +32,10 @@ export const TaskWrapper: React.FC<ITaskWrapperProps> = ({
   const { appUiOptions, handleChangeAppUi } = useHandleChangeAppUi();
   const { updateTaskDataCtx } = useToggleTasks();
 
-  //@ts-ignore
   const isSameDate = dayjs(date).isToday();
+  const isDateTomorrow = dayjs(date).isTomorrow();
+  const formattedDate = dayjs(date).format("DD/MM");
+  console.log("isDateTomorrow", isDateTomorrow, date);
 
   const handleOpenModal = () => {
     handleChangeAppUi({ ...appUiOptions, isModalOpen: true });
@@ -37,9 +47,15 @@ export const TaskWrapper: React.FC<ITaskWrapperProps> = ({
     <div style={{ marginBottom: 20 }}>
       <Accordion>
         {!isSameDate && (
-          <AccordionSummary aria-controls="panel1a-content" id="panel1a-header">
+          <AccordionSummary
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+            expandIcon={<ExpandMoreIcon style={{ color: "#FFF" }} />}
+          >
             <Box ml={4}>
-              <Typography>Task date title {date}</Typography>
+              <Typography>
+                {isDateTomorrow ? "Tomorrow" : formattedDate} tasks
+              </Typography>
             </Box>
           </AccordionSummary>
         )}
@@ -48,7 +64,7 @@ export const TaskWrapper: React.FC<ITaskWrapperProps> = ({
           style={{
             display: "flex",
             flexDirection: "column",
-            paddingTop: isSameDate === 1 ? "26px" : "8px",
+            paddingTop: isSameDate ? "26px" : "8px",
           }}
         >
           <Box>

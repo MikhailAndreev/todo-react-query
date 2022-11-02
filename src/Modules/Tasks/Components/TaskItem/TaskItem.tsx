@@ -18,13 +18,11 @@ import { isLoading } from "../../../../Common/Utils/ReactQueryUtils";
 
 export interface ITaskItemProps {
   taskData: ITaskItem;
-  key: string;
 }
 
 export const TaskItem: React.FC<ITaskItemProps> = ({
   taskData: { id, title, description, isFinished },
   taskData,
-  key,
 }): JSX.Element => {
   const [expanded, setExpanded] = useState<boolean>(false);
   const { appUiOptions, handleChangeAppUi } = useHandleChangeAppUi();
@@ -60,9 +58,8 @@ export const TaskItem: React.FC<ITaskItemProps> = ({
         expanded={expanded}
         onChange={() => handleChange()}
         style={{ boxShadow: "none" }}
-        key={key}
       >
-        <AccordionSummary style={{ width: "100%" }}>
+        <AccordionSummary style={{ width: "100%", padding: 0 }}>
           <Box display={"flex"} width="100%">
             <Box display={"flex"} flex="1 0 auto">
               <Box>

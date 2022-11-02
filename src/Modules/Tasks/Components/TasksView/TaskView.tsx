@@ -1,5 +1,6 @@
 import { Card, CardContent, CircularProgress, Typography } from "@mui/material";
 import { Box } from "@mui/system";
+import { v4 as uuidv4 } from "uuid";
 
 import { ReactComponent as CheckIcon } from "../../../../Assets/Icons/checkIcon.svg";
 import { useInitData } from "../../Hooks/useInitData";
@@ -82,7 +83,7 @@ export const TaskView = (): JSX.Element => {
               </Box>
             ) : transformedData?.length ? (
               transformedData?.map((item: ITaskData) => (
-                <TaskWrapper data={item} />
+                <TaskWrapper data={item} key={uuidv4()} />
               ))
             ) : (
               <div>Empty task list</div>

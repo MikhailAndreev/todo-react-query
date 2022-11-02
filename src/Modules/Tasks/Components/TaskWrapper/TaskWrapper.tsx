@@ -13,11 +13,6 @@ import { v4 as uuidv4 } from "uuid";
 import { ITaskData, ITaskItem } from "../../../../Common/Models/Busines";
 import { useHandleChangeAppUi } from "../../../../Common/Context/AppUIContext";
 import { useToggleTasks } from "../../../../Common/Context/TasksContext";
-import { useCreateTask } from "../../Api/mutations";
-
-//@ts-ignore
-// dayjs.extend(isToday);
-// Попробовать как с uuid новый файл .d.ts
 
 export interface ITaskWrapperProps {
   data: ITaskData;
@@ -31,15 +26,9 @@ export const TaskWrapper: React.FC<ITaskWrapperProps> = ({
 
   //@ts-ignore
   const isSameDate = dayjs(date).isToday();
-  const createTask = useCreateTask();
-
-  const handleCreateTask = (values: any) => {
-    // createTask.mutate(newData);
-  };
 
   const handleOpenModal = () => {
     handleChangeAppUi({ ...appUiOptions, isModalOpen: true });
-    // const currTask = tasks[0];
     const { id: taskId, ...rest } = tasks[0];
     updateTaskDataCtx({ id: "", ...rest });
   };

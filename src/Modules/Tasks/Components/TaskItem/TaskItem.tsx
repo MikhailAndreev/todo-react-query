@@ -7,12 +7,14 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
+
 import { ITaskItem } from "../../../../Common/Models/Busines";
-import { useDeleteTask } from "../../Api/mutations";
+import { useDeleteTask, useUpdateTask } from "../../Api/mutations";
 import SwitchButton from "../../../../Components/SwitchButton/SwitchButton";
 import "./TaskItem.css";
 import { useToggleTasks } from "../../../../Common/Context/TasksContext";
 import { useHandleChangeAppUi } from "../../../../Common/Context/AppUIContext";
+import { isLoading } from "../../../../Common/Utils/ReactQueryUtils";
 
 export interface ITaskItemProps {
   taskData: ITaskItem;
@@ -20,7 +22,7 @@ export interface ITaskItemProps {
 }
 
 export const TaskItem: React.FC<ITaskItemProps> = ({
-  taskData: { id, title, description, color, isFinished },
+  taskData: { id, title, description, isFinished },
   taskData,
   key,
 }): JSX.Element => {
@@ -29,6 +31,8 @@ export const TaskItem: React.FC<ITaskItemProps> = ({
   const { updateTaskDataCtx } = useToggleTasks();
 
   const deleteTask = useDeleteTask();
+  const updateTask = useUpdateTask();
+  const isLoadingData = isLoading([updateTask.status]);
 
   const handleDeleteTask = () => {
     deleteTask.mutateAsync(id);
@@ -43,6 +47,13 @@ export const TaskItem: React.FC<ITaskItemProps> = ({
     updateTaskDataCtx(taskData);
   };
 
+  const handleFinishTask = (val: boolean) => {
+    const updData = { ...taskData, isFinished: val };
+
+    updateTask.mutate(updData);
+    updateTaskDataCtx(updData);
+  };
+
   return (
     <div>
       <Accordion
@@ -51,33 +62,36 @@ export const TaskItem: React.FC<ITaskItemProps> = ({
         style={{ boxShadow: "none" }}
         key={key}
       >
-        <AccordionSummary aria-controls="panel1a-content" id="panel1a-header">
-          <Box display={"flex"}>
-            <Box>
-              <div className="task-label"></div>
-            </Box>
-            <Box>
-              <Typography style={{ lineHeight: expanded ? "30px" : "20px" }}>
-                {title}
-              </Typography>
+        <AccordionSummary style={{ width: "100%" }}>
+          <Box display={"flex"} width="100%">
+            <Box display={"flex"} flex="1 0 auto">
+              <Box>
+                <div className="task-label"></div>
+              </Box>
+              <Box>
+                <Typography
+                  style={{
+                    lineHeight: expanded ? "30px" : "20px",
+                    textDecoration: isFinished ? "line-through" : "none",
+                  }}
+                >
+                  {title}
+                </Typography>
 
-              {!expanded && (
-                <Box>
-                  <Typography
-                    style={{
-                      lineHeight: "10px",
-                      fontSize: 12,
-                      color: "rgba(255, 255, 255, 0.6)",
-                    }}
-                  >
-                    Short description
-                  </Typography>
-                </Box>
-              )}
+                {!expanded && (
+                  <Box className="task-item__short-description">
+                    {description}
+                  </Box>
+                )}
+              </Box>
             </Box>
 
-            <Box alignSelf={"flex-end"}>
-              <SwitchButton />
+            <Box>
+              <SwitchButton
+                isChecked={isFinished}
+                hadleCallback={handleFinishTask}
+                disabled={isLoadingData}
+              />
             </Box>
           </Box>
         </AccordionSummary>

@@ -1,3 +1,5 @@
+import { findTodayInTasks } from "../../../Common/Utils/dateUtils";
+
 export const transformTasksDto = (data: any) => {
   const transformedArr = data.reduce((acc: any, task: any) => {
     const currObj = acc.find((item: any) => item.date === task.startDate);
@@ -9,5 +11,7 @@ export const transformTasksDto = (data: any) => {
     return acc;
   }, []);
 
-  return transformedArr;
+  const tasksStartingToday = findTodayInTasks(transformedArr);
+
+  return tasksStartingToday;
 };

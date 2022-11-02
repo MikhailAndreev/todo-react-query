@@ -1,5 +1,5 @@
-import { QueryClient, useMutation } from "@tanstack/react-query";
-import { ITaskData, ITaskItem } from "../../../Common/Models/Busines";
+import { useMutation } from "@tanstack/react-query";
+import { ITaskItem } from "../../../Common/Models/Busines";
 import { queryClient } from "../../../Common/ReactQuery";
 import { TaskService } from "../../../Services/TaskService";
 import { ETasksQueryKeys } from "../Actions";
@@ -9,17 +9,10 @@ export const useCreateTask = () =>
     [ETasksQueryKeys.CREATE_TASK_ITEM],
     (data: ITaskItem) => TaskService.create(data),
     {
-      onSuccess: (data) => {
-        if (data) {
-          console.log("Create succesful", data);
-        }
+      onError: () => {
+        alert(`Error fetch ${ETasksQueryKeys.CREATE_TASK_ITEM}`);
       },
-      onError: (data) => {
-        if (data) {
-          console.log("ERROR", data);
-        }
-      },
-      onSettled(...params) {
+      onSettled() {
         queryClient.invalidateQueries([ETasksQueryKeys.SET_TASKS_DATA]);
       },
     }
@@ -30,17 +23,10 @@ export const useDeleteTask = () =>
     [ETasksQueryKeys.DELETE_TASK_ITEM],
     (id: string) => TaskService.delete(id),
     {
-      onSuccess: (data) => {
-        if (data) {
-          console.log("delete succesful", data);
-        }
+      onError: () => {
+        alert(`Error fetch ${ETasksQueryKeys.DELETE_TASK_ITEM}`);
       },
-      onError: (data) => {
-        if (data) {
-          console.log("ERROR", data);
-        }
-      },
-      onSettled(...params) {
+      onSettled() {
         queryClient.invalidateQueries([ETasksQueryKeys.SET_TASKS_DATA]);
       },
     }
@@ -51,17 +37,10 @@ export const useUpdateTask = () =>
     [ETasksQueryKeys.UPDATE_TASK_ITEM],
     (data: ITaskItem) => TaskService.update(data),
     {
-      onSuccess: (data) => {
-        if (data) {
-          console.log("delete succesful", data);
-        }
+      onError: () => {
+        alert(`Error fetch ${ETasksQueryKeys.UPDATE_TASK_ITEM}`);
       },
-      onError: (data) => {
-        if (data) {
-          console.log("ERROR", data);
-        }
-      },
-      onSettled(...params) {
+      onSettled() {
         queryClient.invalidateQueries([ETasksQueryKeys.SET_TASKS_DATA]);
       },
     }

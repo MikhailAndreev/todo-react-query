@@ -4,16 +4,8 @@ import { ENewsQueryKeys } from "../Actions";
 
 export const useNewsData = () =>
   useQuery([ENewsQueryKeys.SET_NEWS_DATA], () => NewsService.getNews(), {
-    onSuccess: (data) => {
-      if (data) {
-        // console.log("Success", data);
-      }
-    },
-    onError: (data) => {
-      if (data) {
-        // console.log("ERROR", data);
-      }
+    onError: () => {
+      alert(`Error fetch ${ENewsQueryKeys.SET_NEWS_DATA}`);
     },
     keepPreviousData: true,
-    enabled: true,
   });

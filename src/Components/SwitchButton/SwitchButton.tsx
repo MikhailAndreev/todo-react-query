@@ -1,6 +1,5 @@
+import { useState } from "react";
 import { styled } from "@mui/material/styles";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import SwitchCheckIcon from "../../Assets/Icons/check.svg";
 import SwitchCrossIcon from "../../Assets/Icons/cross.svg";
@@ -52,18 +51,37 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-export default function SwitchButton() {
-  const hendleChange = (e: any) => {
-    e.stopPropagation();
-    console.log("clicked");
+interface IPropsSwitchButton {
+  isChecked: boolean;
+  hadleCallback: (val: boolean) => void;
+  disabled?: boolean;
+}
+
+export default function SwitchButton(props: IPropsSwitchButton) {
+  const { hadleCallback, isChecked, disabled = false } = props;
+  const [checked, setChecked] = useState<boolean>(!isChecked);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.stopPropagation();
+    const isTickerRun = event.target.checked;
+
+    setChecked(isTickerRun);
+    hadleCallback(!isTickerRun);
   };
+
+  // To avoid collapsing Accordion component
+  const handleClick = (e: any) => {
+    e.stopPropagation();
+  };
+
   return (
     <MaterialUISwitch
       sx={{ m: 1 }}
-      defaultChecked
       inputProps={{ "aria-label": "Switch A" }}
-      onChange={(e) => hendleChange(e)}
-      onClick={(e) => hendleChange(e)}
+      checked={checked}
+      onChange={(e) => handleChange(e)}
+      onClick={(e) => handleClick(e)}
+      disabled={disabled}
     />
   );
 }

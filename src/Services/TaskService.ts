@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ITaskData, ITaskItem } from "../Common/Models/Busines";
+import { ITaskItem } from "../Common/Models/Busines";
 import { API_URL } from "../Consts/consts";
 
 axios.defaults.baseURL = API_URL;

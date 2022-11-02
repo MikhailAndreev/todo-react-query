@@ -20,3 +20,13 @@
   white-space: nowrap;
   transform: rotate(90deg);
 }
+
+.task-item__short-description {
+  width: 140px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  line-height: 12px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+}

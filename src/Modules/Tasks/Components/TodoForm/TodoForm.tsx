@@ -2,17 +2,16 @@ import { useEffect, useState } from "react";
 import {
   Box,
   Button,
-  FormControl,
   Input,
   InputLabel,
   TextareaAutosize,
 } from "@mui/material";
-import dayjs from "dayjs";
-import { v4 as uuidv4 } from "uuid";
 import { useToggleTasks } from "../../../../Common/Context/TasksContext";
 import { useTaskById } from "../../Hooks/useTaskById";
-import { ITaskItem } from "../../../../Common/Models/Busines";
 import { useCreateTask, useUpdateTask } from "../../Api/mutations";
+import { useHandleChangeAppUi } from "../../../../Common/Context/AppUIContext";
+import { EReactQueryStatus } from "../../../../Common/Enums";
+import { transformTaskDataDto } from "../../Utils/transformTaskDataDto";
 
 export const TodoForm = (): JSX.Element => {
   const [values, setValues] = useState<{ title: string; description: string }>({
@@ -22,38 +21,30 @@ export const TodoForm = (): JSX.Element => {
 
   const { taskDataCtx } = useToggleTasks();
   const { taskItemData } = useTaskById(taskDataCtx.id);
+  const { appUiOptions, handleChangeAppUi } = useHandleChangeAppUi();
+
   const createTask = useCreateTask();
   const updateTask = useUpdateTask();
 
   const isCreateForm = taskDataCtx?.id ? false : true;
 
   useEffect(() => {
-    console.log("taskItemData", taskItemData);
-    console.log("taskDataCtx", taskDataCtx);
     if (taskItemData?.data) {
       const { title, description } = taskItemData.data;
       setValues({ title, description });
     }
   }, [taskDataCtx, taskItemData]);
 
-  const transformTaskDataDto = (data: any): ITaskItem => {
-    const startDate = taskDataCtx?.startDate || dayjs().format("MM-DD-YYYY");
-    const id = taskDataCtx?.id || uuidv4();
-    return {
-      id,
-      title: data?.title,
-      description: data?.description,
-      color: "sd",
-      startDate,
-      isFinished: false,
-    };
-  };
+  if (
+    createTask.status === EReactQueryStatus.SUCCESS ||
+    updateTask.status === EReactQueryStatus.SUCCESS
+  ) {
+    handleChangeAppUi({ ...appUiOptions, isModalOpen: false });
+  }
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    console.log("values", values);
-    const taskDataDto = transformTaskDataDto(values);
-    console.log("values", taskDataDto);
+    const taskDataDto = transformTaskDataDto(values, taskDataCtx);
     if (isCreateForm) {
       createTask.mutate(taskDataDto);
     } else {

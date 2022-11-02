@@ -11,7 +11,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <CssBaseline classes={{ display: "flex" }} />
+      <CssBaseline />
       <App />
     </ThemeProvider>
   </React.StrictMode>

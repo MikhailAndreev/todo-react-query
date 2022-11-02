@@ -11,10 +11,6 @@ import { MainPage } from "./Pages/MainPage";
 dayjs.extend(isToday);
 
 function App() {
-  useEffect(() => {
-    // console.log("i am rendered");
-  }, []);
-
   return (
     <React.Suspense fallback={null}>
       <AppContextProvider>

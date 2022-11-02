@@ -1,12 +1,11 @@
 import React, { createContext, useState, useContext } from "react";
 import noop from "lodash/noop";
-import { ITaskData, ITaskItem } from "../Models/Busines";
+import { ITaskItem } from "../Models/Busines";
 
 const TasksContext = createContext({
   taskDataCtx: {
     id: "",
     title: "",
-    color: "",
     description: "",
     isFinished: false,
     startDate: "",
@@ -18,7 +17,6 @@ const TasksContextProvider = ({ children }: any) => {
   const [taskDataCtx, setTaskData] = useState<ITaskItem>({
     id: "",
     title: "",
-    color: "",
     description: "",
     isFinished: false,
     startDate: "",

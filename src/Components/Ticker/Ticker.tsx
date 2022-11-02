@@ -1,9 +1,10 @@
 import Marquee from "react-fast-marquee";
 import { Box } from "@mui/material";
 import { useHandleChangeAppUi } from "../../Common/Context/AppUIContext";
+import "./Ticker.css";
 
 interface ITickerProps {
-  newsDescription: string;
+  newsDescription?: string;
 }
 
 export default function Ticker(props: ITickerProps) {

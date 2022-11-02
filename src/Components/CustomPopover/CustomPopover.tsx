@@ -1,13 +1,6 @@
 import { useState } from "react";
 import {
-  Card,
-  CardContent,
-  CircularProgress,
   IconButton,
-  Modal,
-  Select,
-  MenuItem,
-  FormGroup,
   FormControlLabel,
   Popper,
   Typography,
@@ -16,37 +9,28 @@ import {
   Paper,
   Box,
   Grid,
-  Button,
 } from "@mui/material";
+
 import { ReactComponent as SettingsIcon } from "../../Assets/Icons/settings.svg";
-import { PopperPlacementType } from "@mui/material/Popper";
 import { TRANSITION_TIMEOUT_POPPER_MS } from "../../Consts/consts";
 import { useHandleChangeAppUi } from "../../Common/Context/AppUIContext";
 
-interface ICustomPopover {
-  handlePoppoverChange: () => void;
-}
-
-export default function CustomPopover(props: ICustomPopover) {
-  const { handlePoppoverChange } = props;
+export default function CustomPopover() {
   const { appUiOptions, handleChangeAppUi } = useHandleChangeAppUi();
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [open, setOpen] = useState<boolean>(false);
   const [checked, setChecked] = useState<boolean>(appUiOptions.isTickerRun);
 
-  const handleClick =
-    (newPlacement: PopperPlacementType) =>
-    (event: React.MouseEvent<HTMLButtonElement>) => {
-      setAnchorEl(event.currentTarget);
-      setOpen((prev) => !prev);
-    };
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+    setOpen((prev) => !prev);
+  };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const isTickerRun = event.target.checked;
     setChecked(isTickerRun);
     handleChangeAppUi({ ...appUiOptions, isTickerRun });
-    handlePoppoverChange();
   };
   const isLoading = false;
 
@@ -77,7 +61,7 @@ export default function CustomPopover(props: ICustomPopover) {
 
       <Grid container justifyContent="center">
         <Grid item>
-          <IconButton onClick={handleClick("bottom-end")}>
+          <IconButton onClick={handleClick}>
             <SettingsIcon />
           </IconButton>
         </Grid>

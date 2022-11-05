@@ -20,7 +20,6 @@ export const MainPage = (): JSX.Element => {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        height: "100vh",
       }}
     >
       <TaskView />

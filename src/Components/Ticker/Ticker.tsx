@@ -16,7 +16,7 @@ export default function Ticker(props: ITickerProps) {
   if (!newsDescription) return null;
 
   return (
-    <Box>
+    <Box mb={4}>
       <Marquee play={isTickerRun} speed={10} gradient={false}>
         <div className="ticker-text">{newsDescription}</div>
       </Marquee>
